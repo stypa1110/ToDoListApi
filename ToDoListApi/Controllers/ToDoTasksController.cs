@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoListApi.Database;
 using ToDoListApi.Repository;
-using ToDoListApi.Requests;
 
 namespace ToDoListApi.Controllers
 {
@@ -17,21 +16,21 @@ namespace ToDoListApi.Controllers
         }
 
         [HttpPost("addtask")]
-        public async Task<bool> AddTask([FromBody] AddTaskCommand command)
+        public async Task<bool> AddTask([FromBody] TasksTable command)
         {
-            return await _toDoTasksRepository.AddNewTask(command.TaskName, command.TaskDescription, command.TaskDate, command.NotificationDate);
+            return await _toDoTasksRepository.AddNewTask(command.Name, command.Description, command.TaskDate, command.NotificationDate);
         }
 
-        [HttpGet("gettasks/{date}")]
-        public async Task<List<TasksTable>> GetTasks(DateTime date)
+        [HttpGet("gettasks")]
+        public async Task<List<TasksTable>> GetTasks([FromQuery] DateTime date)
         {
             return await _toDoTasksRepository.GetTasksByDate(date);
         }
 
         [HttpPatch("edittask")]
-        public async Task<bool> EditTask([FromBody] EditTaskCommand command)
+        public async Task<bool> EditTask([FromBody] TasksTable command)
         {
-            return await _toDoTasksRepository.EditTask(command.TaskId, command.TaskName, command.TaskDescription, command.TaskDate, command.NotificationDate);
+            return await _toDoTasksRepository.EditTask(command.TaskId, command.Name, command.Description, command.TaskDate, command.NotificationDate);
         }
 
         [HttpDelete("deletetask")]
